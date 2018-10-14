@@ -1,0 +1,9 @@
+__pycache__/*
+venv/*
+stage_1_detailed_class_info.csv
+stage_1_sample_submission.csv
+stage_1_train_labels.csv
+stage_1_test_images.zip
+stage_1_train_images.zip
+stage_1_train_images/*
+stage_1_test_images/*
