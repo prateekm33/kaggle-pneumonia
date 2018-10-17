@@ -1,6 +1,6 @@
 import numpy as np
 
 def load_data():
-  images = np.fromfile(open('processed_train_images', 'r'))
-  labels = np.fromfile(open('processed_train_labels', 'r'))
+  images = np.load('processed_train_images.npy')
+  labels = np.load('processed_train_labels.npy')
   return images, labels
