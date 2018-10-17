@@ -7,4 +7,4 @@ images_file = open('processed_train_images', 'w')
 images_file.write(np.array2string(images))
 
 labels_file = open('processed_train_labels', 'w')
-labels_file.write(array2string(labels))
+labels_file.write(np.array2string(labels))
