@@ -8,7 +8,7 @@ bclass = False
 
 # Meta-variables
 test_size = 0.3 # proportion of overall training set
-sample_size = 300 # number of dps to set as size for original training set
+sample_size = 100 # number of dps to set as size for original training set
 epochs = 5
 batch_size = 16
 loss = "mean_squared_logarithmic_error"
@@ -18,7 +18,7 @@ optimizer = "adam"
 
 def main():
   # Process images
-  train_X_orig, train_Y_orig = process_images('stage_1_train_images', 'stage_1_train_labels.csv', sample_size=500, bclass=bclass)
+  train_X_orig, train_Y_orig = process_images('stage_1_train_images', 'stage_1_train_labels.csv', sample_size=sample_size, bclass=bclass)
   train_X, test_X, train_Y, test_Y = train_test_split(train_X_orig, train_Y_orig, test_size=0.3)
   print("size of training set X: ", train_X.shape)
   print("size of testing set X: ", test_X.shape)
