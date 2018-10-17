@@ -2,7 +2,7 @@ from os import listdir, path
 import pandas as pd
 import numpy as np
 import pydicom
-import scipy
+import scipy.misc
 import cv2
 
 def convertDCM_PNG(dir, file):
