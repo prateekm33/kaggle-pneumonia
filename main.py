@@ -2,11 +2,13 @@ import numpy as np
 from process_images import process_images
 from model import PneuModel
 from sklearn.model_selection import train_test_split
+from load_data import load_data
 
-# Debug: True for binary_classification only. False for classification w/bb's
-bclass = False
+# Debug variables
+bclass = False # True for binary_classification only. False for classification w/bb's
+force = False # True to re-run preprocessing step and not use stored data
 
-# Meta-variables
+# Meta variables
 test_size = 0.3 # proportion of overall training set
 sample_size = 100 # number of dps to set as size for original training set
 epochs = 5
@@ -16,9 +18,13 @@ if bclass == True:
   loss = "binary_crossentropy"
 optimizer = "adam"
 
-def main():
+def main(force = False):
   # Process images
-  train_X_orig, train_Y_orig = process_images('stage_1_train_images', 'stage_1_train_labels.csv', sample_size=sample_size, bclass=bclass)
+  if force:
+    train_X_orig, train_Y_orig = process_images('stage_1_train_images', 'stage_1_train_labels.csv', sample_size=sample_size, bclass=bclass)
+  else:
+    train_X_orig, train_Y_orig = load_data()
+
   train_X, test_X, train_Y, test_Y = train_test_split(train_X_orig, train_Y_orig, test_size=0.3)
   print("size of training set X: ", train_X.shape)
   print("size of testing set X: ", test_X.shape)
@@ -41,4 +47,4 @@ def main():
   print ("Loss = " + str(preds[0]))
   print ("Test Accuracy = " + str(preds[1]))
 
-main()
+main(force)
