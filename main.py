@@ -50,5 +50,5 @@ def main(force=False, skip_pandas=0):
   print ("Loss = " + str(preds[0]))
   print ("Test Accuracy = " + str(preds[1]))
 
-main()
+main(force)
 
