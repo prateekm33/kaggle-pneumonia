@@ -25,8 +25,8 @@ def convertDCM_PNG(dir, file):
 
   return image, shape
 
-def process_images(images_dir, labels_csv,  sample_size=None, bclass = False):
-  Labels = pd.read_csv(labels_csv, dtype={'patientId': str, 'x': np.float64, 'y': np.float64, 'width': np.float64, 'height': np.float64, 'Target': np.float64}, engine="python")
+def process_images(images_dir, labels_csv,  sample_size=None, bclass = False, batch_size=16):
+  Labels = pd.read_csv(labels_csv, dtype={'patientId': str, 'x': np.float32, 'y': np.float32, 'width': np.float32, 'height': np.float32, 'Target': np.float32}, engine="python", nrows=batch_size)
   
   if sample_size:
     Labels = Labels.loc[0:sample_size - 1,:]
