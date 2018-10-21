@@ -1,14 +1,24 @@
+import datetime
 import sys
 import numpy as np
 from process_images import process_images
-from model import PneuModel, pneuModel
+from model import create_model
 from sklearn.model_selection import train_test_split
-# from load_data import load_data
 from get_partition import get_partition, get_labels
 from data_generator import DataGenerator
 from model_callbacks import Logger
+from tensorflow.keras import load_model
 
-def run():
+def main(model_file=None):
+  if model_file != None:
+    model = load_model(model_file)
+  else:
+    model = create_model()
+  
+  run(model)
+
+
+def run(pneuModel):
   params = {'dim': (600,600,1),
           'batch_size': 16,
           'n_classes': 5,
@@ -22,13 +32,6 @@ def run():
   # Generators
   training_generator = DataGenerator(partition['train'], labels, **params)
   validation_generator = DataGenerator(partition['validation'], labels, **params)
-
-  # Create model
-  # pneuModel = PneuModel(params['dim'], bclass=bclass)
-
-  # Compile model
-  # pneuModel.compile(optimizer=optimizer, loss=loss, metrics=["accuracy"])
-
 
   # Train model on dataset
   callbacks = [Logger()]
@@ -49,11 +52,18 @@ def run():
     test_X[i] = np.load('processed_train_images/' + _id + '.npz')['image']
 
   preds = pneuModel.evaluate(x=test_X, y=test_Y)
-  log_file = open('log_predict.txt', 'a')
-  log_file.write('Loss = ' + str(preds[0] + '\n')
+  
+  ts = '.'.join(str(datetime.datetime.now()).split('.')[0])
+  f = open('evaluations/%s.txt' %ts, 'w')
+  f.write(str(preds))
+  pneuModel.save('model-' + ts + '.h5')
   # pf.write('Test Accuracy = ' + str(preds[1]) + '\n')
   # pf.write('preds : \n')
   # pf.write('\t\t' + preds)
 
-print(pneuModel)
-run()
+
+model_file = None
+if (len(sys.argv) > 1):
+  model_file = sys.argv[1]
+
+run(model_file)
