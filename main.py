@@ -1,3 +1,4 @@
+import sys
 import numpy as np
 from process_images import process_images
 from model import PneuModel
@@ -6,7 +7,12 @@ from load_data import load_data
 
 # Debug variables
 bclass = False # True for binary_classification only. False for classification w/bb's
-force = True # True to re-run preprocessing step and not use stored data
+force = False # True to re-run preprocessing step and not to use stored data. False to use stored data
+if len(sys.argv) > 1:
+  if sys.argv[1] == 'true':
+    force = True
+  elif sys.argv[1] == 'false':
+    force = False
 
 # Meta variables
 test_size = 0.3 # proportion of overall training set
@@ -31,7 +37,9 @@ def main(force=False):
   print("size of testing set X: ", test_X.shape)
   print("size of training set Y: ", train_Y.shape)
   print("size of testing set Y: ", test_Y.shape)
-
+  
+  print("transposed : ", train_X.T.shape, train_Y.T.shape)
+  
   # Create model
   pneuModel = PneuModel(train_X.shape[1:], bclass=bclass)
 

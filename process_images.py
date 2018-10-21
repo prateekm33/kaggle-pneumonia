@@ -7,23 +7,31 @@ import cv2
 
 def convertDCM_PNG(dir, file):
   ds = pydicom.dcmread(dir + '/' + file)
+  ds_ = np.array(ds.pixel_array)
+  # ds_ = np.uint8(ds_)
+  ds_ = cv2.resize(ds_, (600,600)) / 255
+  ds_ = np.reshape(ds_, (600,600,1))
   shape = ds.pixel_array.shape
+  # print('ds : ', ds_.shape)
+  # return np.array(ds), ds.pixel_array.shape
+
+  # shape = ds.pixel_array.shape
 
   # Convert to float to avoid overflow or underflow losses.
-  image_2d = ds.pixel_array.astype(float)
+  # image_2d = ds.pixel_array #.astype(float)
 
   # Rescaling grey scale between 0-255
-  image_2d_scaled = (np.maximum(image_2d,0) / image_2d.max()) * 255.0
+  # image_2d_scaled = (np.maximum(image_2d,0) / image_2d.max()) * 255.0
 
   # Convert to uint
-  image_2d_scaled = np.uint8(image_2d_scaled)
+  # image_2d_scaled = np.uint8(image_2d_scaled)
   
   # Scale images down to 600 x 600
-  image_2d_scaled = scipy.misc.imresize(image_2d_scaled, (600, 600, 1))
+  # image_2d_scaled = scipy.misc.imresize(image_2d, (600, 600, 1))
   # Divide by 255 to normalize pixel data
-  image = np.array(image_2d_scaled, ndmin=3) / 255.0
+  # image = np.array(image_2d_scaled, ndmin=3) / 255
 
-  return image, shape
+  return ds_, shape
 
 def process_images(images_dir, labels_csv,  sample_size=None, bclass = False):
   Labels = pd.read_csv(labels_csv, dtype={'patientId': str, 'x': np.float32, 'y': np.float32, 'width': np.float32, 'height': np.float32, 'Target': np.float32}, engine="python")
@@ -43,7 +51,7 @@ def process_images(images_dir, labels_csv,  sample_size=None, bclass = False):
   for i in range(0, len(Labels)):
     f = Labels.loc[i, 'patientId'] + '.dcm'
     image, shape = convertDCM_PNG(images_dir, f)
-    images.append(image.T)
+    images.append(image)
     y_scale = 600. / shape[0]
     x_scale = 600. / shape[1]
     if bclass == False:
@@ -53,5 +61,5 @@ def process_images(images_dir, labels_csv,  sample_size=None, bclass = False):
       labels[i, 3] = Labels.loc[i, 'height'] * (y_scale * y_scale)
 
   images = np.array(images)
-  
+  print('--->', images.shape, labels.shape) 
   return images, labels
