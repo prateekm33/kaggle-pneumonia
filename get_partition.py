@@ -29,5 +29,5 @@ def get_labels():
 
   labels_dict = {}
   for i in range(0, len(labels)):
-    labels_dict[labels[i][0]] = labels[i, 1:]
+    labels_dict[labels[i][0]] = labels[i][1:]
   return labels_dict

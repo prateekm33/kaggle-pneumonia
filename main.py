@@ -5,6 +5,7 @@ from model import PneuModel
 from sklearn.model_selection import train_test_split
 # from load_data import load_data
 from get_partition import get_partition, get_labels
+from data_generator import DataGenerator
 
 # Debug variables
 bclass = False # True for binary_classification only. False for classification w/bb's
@@ -76,7 +77,7 @@ def run():
   validation_generator = DataGenerator(partition['validation'], labels, **params)
 
   # Create model
-  pneuModel = PneuModel(params.dim, bclass=bclass)
+  pneuModel = PneuModel(params['dim'], bclass=bclass)
 
   # Compile model
   pneuModel.compile(optimizer=optimizer, loss=loss, metrics=["accuracy"])

@@ -1,4 +1,4 @@
-from tensorflow.keras as keras
+from tensorflow import keras
 import numpy as np
 
 class DataGenerator(keras.utils.Sequence):
@@ -48,7 +48,7 @@ class DataGenerator(keras.utils.Sequence):
         # Generate data
         for i, ID in enumerate(list_IDs_temp):
             # Store sample
-            X[i,] = np.load('processed_train_images/' + ID + '.npz').image
+            X[i,] = np.load('processed_train_images/' + ID + '.npz')['image']
 
             # Store class
             y[i] = self.labels[ID]
