@@ -42,7 +42,7 @@ def main(force=False):
   
   # Create model
   pneuModel = PneuModel(train_X.shape[1:], bclass=bclass)
-
+  
   # # Compile model
   pneuModel.compile(optimizer=optimizer, loss=loss, metrics=["accuracy"])
 
