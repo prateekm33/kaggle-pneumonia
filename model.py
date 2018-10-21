@@ -53,3 +53,8 @@ def PneuModel(input_shape, bclass=False, reg_lambda=0.01):
   model = Model(inputs = X_input, outputs = X, name='PneuModel')
 
   return model
+
+# Create model
+pneuModel = PneuModel((600,600,1), bclass=False)
+# Compile model
+pneuModel.compile(optimizer='adam', loss='mean_squared_logarithmic_error', metrics=["accuracy"])
