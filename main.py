@@ -32,7 +32,7 @@ def main(force=False):
   else:
     train_X_orig, train_Y_orig = load_data()
 
-  train_X, test_X, train_Y, test_Y = train_test_split(train_X_orig, train_Y_orig, test_size=0.3)
+  train_X, test_X, train_Y, test_Y = train_test_split(train_X_orig, train_Y_orig[:, 1:], test_size=0.3)
   print("size of training set X: ", train_X.shape)
   print("size of testing set X: ", test_X.shape)
   print("size of training set Y: ", train_Y.shape)

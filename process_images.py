@@ -34,10 +34,7 @@ def convertDCM_PNG(dir, file):
   return ds_, shape
 
 def process_images(images_dir, labels_csv,  sample_size=None, bclass = False):
-  labels = pd.read_csv(labels_csv, dtype={'patientId': str, 'x': np.float32, 'y': np.float32, 'width': np.float32, 'height': np.float32, 'Target': np.float32}, engine="python", nrows=sample_size).values
-  
-  # convert Labels<DataFrame> to np.array
-  # labels = Labels.values[:, 1:]
+  labels = pd.read_csv(labels_csv, dtype={'patientId': str, 'x': np.float32, 'y': np.float32, 'width': np.float32, 'height': np.float32, 'Target': np.float32}, engine="python", nrows=sample_size).fillna(0).values
  
   if bclass == True:
     labels = labels[:, -1]
@@ -46,23 +43,16 @@ def process_images(images_dir, labels_csv,  sample_size=None, bclass = False):
   # convert dicom images to np.arrays
   images = np.zeros((len(labels), 600, 600, 1))
   for i in range(0, len(labels)):
-    # f = Labels.loc[i, 'patientId'] + '.dcm'
     f = labels[i, 0] + '.dcm'
     image, shape = convertDCM_PNG(images_dir, f)
     images[i] = image
-    # images.append(image)
     y_scale = 600. / shape[0]
     x_scale = 600. / shape[1]
     if bclass == False:
-      # labels[i, 0] = Labels.loc[i, 'x'] * x_scale
       labels[i, 1] *= x_scale
-      # labels[i, 1] = Labels.loc[i, 'y'] * y_scale
       labels[i, 2] *= y_scale
-      # labels[i, 2] = Labels.loc[i, 'width'] * (x_scale * x_scale)
-      labels[i, 3] *= (x_scale * x_scale)
-      # labels[i, 3] = Labels.loc[i, 'height'] * (y_scale * y_scale)
-      labels[i, 4] *= (y_scale * y_scale)     
+      labels[i, 3] *= x_scale
+      labels[i, 4] *= y_scale
 
-  # images = np.array(images) 
-  print(type(images))
-  return images, np.reshape(labels[:,1:], (len(labels), 5))
+  # np.reshape(labels[:,1:], (len(labels), 5))
+  return images, np.reshape(labels, (len(labels), 6))

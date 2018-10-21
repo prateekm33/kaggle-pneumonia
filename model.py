@@ -17,7 +17,7 @@ import tensorflow.keras.backend as K
 
 def PneuModel(input_shape, bclass=False, reg_lambda=0.01):
   print('input shape : ', input_shape)
-  
+
   # This returns a tensor
   X_input = Input(shape=input_shape)
 
@@ -25,7 +25,7 @@ def PneuModel(input_shape, bclass=False, reg_lambda=0.01):
   X = ZeroPadding2D((1, 1))(X_input)
 
   # CONV -> BN -> RELU Block applied to X
-  X = Conv2D(32, (7, 7), strides=(1,1), name = 'conv0')(X)
+  X = Conv2D(32, (5, 5), strides=(1,1), name = 'conv0')(X)
   X = BatchNormalization(axis = 3, name = 'bn0')(X)
   X = Activation('relu')(X)
 
