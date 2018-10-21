@@ -7,7 +7,7 @@ from sklearn.model_selection import train_test_split
 from get_partition import get_partition, get_labels
 from data_generator import DataGenerator
 from model_callbacks import Logger
-from tensorflow.keras import load_model
+from tensorflow.keras.models import load_model
 
 def main(model_file=None):
   if model_file != None:
@@ -56,7 +56,7 @@ def run(pneuModel):
   ts = '.'.join(str(datetime.datetime.now()).split('.')[0])
   f = open('evaluations/%s.txt' %ts, 'w')
   f.write(str(preds))
-  pneuModel.save('model-' + ts + '.h5')
+  pneuModel.save('models/model-' + ts + '.h5')
   # pf.write('Test Accuracy = ' + str(preds[1]) + '\n')
   # pf.write('preds : \n')
   # pf.write('\t\t' + preds)

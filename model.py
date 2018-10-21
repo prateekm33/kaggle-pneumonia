@@ -54,7 +54,7 @@ def PneuModel(input_shape, bclass=False, reg_lambda=0.01):
 
   return model
 
-def create_model(dims=(600,600,1), optimizer='adam', loss='mean_squared_logarithmic_error', metrics=["accuracy"], bclass):
+def create_model(dims=(600,600,1), optimizer='adam', loss='mean_squared_logarithmic_error', metrics=["accuracy"], bclass=False):
   # Create model
   pneuModel = PneuModel(dims, bclass=bclass)
   # Compile model
