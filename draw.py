@@ -1,6 +1,4 @@
-from PIL.Image import fromarray
 import cv2
-import numpy as np
 from load_data import load_data
 import pydicom
 
