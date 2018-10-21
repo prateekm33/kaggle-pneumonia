@@ -49,8 +49,7 @@ class DataGenerator(keras.utils.Sequence):
         for i, ID in enumerate(list_IDs_temp):
             # Store sample
             X[i,] = np.load('processed_train_images/' + ID + '.npz')['image']
-
-            # Store class
+            # Store label
             y[i] = self.labels[ID]
 
         return X, y

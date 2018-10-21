@@ -17,11 +17,11 @@ def get_partition(labels_csv):
   np.random.shuffle(IDs)
   partition_1 = int(np.floor(len(IDs) * 0.6))
   partition_2 = int(np.floor(len(IDs) * 0.8))
-  print(partition_1, partition_2)
+  
   return {
-    'train': IDs[:partition_1,:],
-    'validation': IDs[partition_1:partition_2,:],
-    'test': IDs[:partition_2,:]
+    'train': IDs[:partition_1, 0],
+    'validation': IDs[partition_1:partition_2, 0],
+    'test': IDs[:partition_2, 0]
   }
   
 def get_labels():

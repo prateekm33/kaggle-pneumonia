@@ -83,11 +83,13 @@ def run():
   pneuModel.compile(optimizer=optimizer, loss=loss, metrics=["accuracy"])
 
   # Train model on dataset
-  pneuModel.fit_generator(generator=training_generator,
+  history_cb = pneuModel.fit_generator(generator=training_generator,
                       validation_data=validation_generator,
                       use_multiprocessing=True,
                       workers=6)
-  
+  np.savetxt("logs.txt", history_cb, delimiter="\n")  
+
+
   # Test model
   test_label_ids = partition['test']
   test_Y = np.zeros((len(test_label_ids, 5)))
