@@ -6,6 +6,7 @@ from sklearn.model_selection import train_test_split
 # from load_data import load_data
 from get_partition import get_partition, get_labels
 from data_generator import DataGenerator
+from model_callbacks import Logger
 
 # Debug variables
 bclass = False # True for binary_classification only. False for classification w/bb's
@@ -82,11 +83,15 @@ def run():
   # Compile model
   pneuModel.compile(optimizer=optimizer, loss=loss, metrics=["accuracy"])
 
+
   # Train model on dataset
-  history_cb = pneuModel.fit_generator(generator=training_generator,
+  callbacks = [Logger()]
+  pneuModel.fit_generator(generator=training_generator,
                       validation_data=validation_generator,
                       use_multiprocessing=True,
-                      workers=6)
+                      workers=6,
+                      callbacks=callbacks
+                      )
   np.savetxt("logs.txt", history_cb, delimiter="\n")  
 
 
