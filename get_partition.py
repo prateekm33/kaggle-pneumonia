@@ -7,7 +7,7 @@ get all IDs -- read from csv
 shuffle/rand perm
 '''
 
-def get_partition():
+def get_partition(labels_csv):
   IDs = np.array(pd.read_csv(
     labels_csv,
     dtype={'patientId': str, 'x': np.float32, 'y': np.float32, 'width': np.float32, 'height': np.float32, 'Target': np.float32},
@@ -15,8 +15,9 @@ def get_partition():
     usecols=['patientId']
   ).values)
   np.random.shuffle(IDs)
-  partition_1 = np.floor(len(IDs) * 0.6)
-  partition_2 = np.floor(len(IDs) * 0.8)
+  partition_1 = int(np.floor(len(IDs) * 0.6))
+  partition_2 = int(np.floor(len(IDs) * 0.8))
+  print(partition_1, partition_2)
   return {
     'train': IDs[:partition_1,:],
     'validation': IDs[partition_1:partition_2,:],
@@ -24,7 +25,7 @@ def get_partition():
   }
   
 def get_labels():
-  labels = [np.load(f).label for f in listdir('processed_train_labels')]
+  labels = [np.load('processed_train_labels/' + f)['label'] for f in listdir('processed_train_labels')]
 
   labels_dict = {}
   for i in range(0, len(labels)):

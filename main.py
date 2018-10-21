@@ -3,7 +3,7 @@ import numpy as np
 from process_images import process_images
 from model import PneuModel
 from sklearn.model_selection import train_test_split
-from load_data import load_data
+# from load_data import load_data
 from get_partition import get_partition, get_labels
 
 # Debug variables
@@ -68,7 +68,7 @@ def run():
           'shuffle': True}
 
   # Datasets
-  partition = get_partition() # IDs
+  partition = get_partition('stage_1_train_labels.csv') # IDs
   labels = get_labels() # Labels
 
   # Generators
