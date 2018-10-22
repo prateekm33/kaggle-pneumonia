@@ -22,21 +22,6 @@ def PneuModel(input_shape, bclass=False, reg_lambda=0.01):
   X = Conv2D(32, (7, 7), strides=(1,1), name = 'conv1', activity_regularizer=regularizers.l2(reg_lambda))(X)
   X = BatchNormalization(axis = 3, name = 'bn1')(X)
   X = Activation('relu')(X)
-
-  # # CONV -> BN -> RELU Block applied to X
-  # X = Conv2D(32, (7, 7), strides=(1,1), name = 'conv2', activity_regularizer=regularizers.l2(reg_lambda))(X)
-  # X = BatchNormalization(axis = 3, name = 'bn2')(X)
-  # X = Activation('relu')(X)
-
-  # # CONV -> BN -> RELU Block applied to X
-  # X = Conv2D(32, (7, 7), strides=(1,1), name = 'conv3', activity_regularizer=regularizers.l2(reg_lambda))(X)
-  # X = BatchNormalization(axis = 3, name = 'bn3')(X)
-  # X = Activation('relu')(X)
-
-  # # CONV -> BN -> RELU Block applied to X
-  # X = Conv2D(32, (7, 7), strides=(1,1), name = 'conv4', activity_regularizer=regularizers.l2(reg_lambda))(X)
-  # X = BatchNormalization(axis = 3, name = 'bn4')(X)
-  # X = Activation('relu')(X)
   
   # MAXPOOL
   X = MaxPooling2D((2, 2), name='max_pool')(X)
