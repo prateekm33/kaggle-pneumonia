@@ -10,23 +10,32 @@ from model_callbacks import Logger
 from tensorflow.keras.models import load_model
 from tensorflow.keras.callbacks import CSVLogger
 
+bclass = False
+loss = 'mean_squared_error'#'binary_crossentropy'
+n_output = 5
+sample_size = 1000
+epochs = 1
+
 def main(model_file=None):
   if model_file != None:
     model = load_model(model_file)
   else:
-    model = create_model()
+    model = create_model(bclass=bclass, loss=loss)
   run(model)
 
 
 def run(pneuModel):
-  params = {'dim': (600,600,1),
+  params = {'dim': (200,200,1),
           'batch_size': 16,
-          'n_classes': 5,
+          'n_classes': n_output,
           'n_channels': 1,
-          'shuffle': True}
+          'shuffle': True,
+          'bclass': bclass,
+          'n_output': n_output
+          }
 
   # Datasets
-  partition = get_partition('stage_1_train_labels.csv', 1000) # IDs
+  partition = get_partition('stage_1_train_labels.csv', sample_size) # IDs
   labels = get_labels() # Labels
 
   # Generators
@@ -39,7 +48,8 @@ def run(pneuModel):
                       validation_data=validation_generator,
                       use_multiprocessing=True,
                       workers=6,
-                      callbacks=callbacks
+                      callbacks=callbacks,
+                      epochs=epochs
                       )
   ts = '.'.join(str(datetime.datetime.now()).split('.'))
   pneuModel.save('models/model-' + ts + '.h5')

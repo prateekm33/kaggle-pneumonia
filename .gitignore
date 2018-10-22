@@ -13,3 +13,4 @@ logs.txt
 evaluations/
 *.log
 predictions.txt
+models/*

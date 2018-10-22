@@ -1,7 +1,6 @@
 import numpy as np
 from tensorflow.keras import layers, regularizers
-from tensorflow.keras.layers import Input, Dense, Activation, ZeroPadding2D, BatchNormalization, Flatten, Conv2D
-from tensorflow.keras.layers import MaxPooling2D
+from tensorflow.keras.layers import Input, Dense, Activation, ZeroPadding2D, BatchNormalization, Flatten, Conv2D, MaxPooling2D
 from tensorflow.keras.models import Model
 
 def PneuModel(input_shape, bclass=False, reg_lambda=0.01):
@@ -12,9 +11,9 @@ def PneuModel(input_shape, bclass=False, reg_lambda=0.01):
 
   # Padding layer
   X = ZeroPadding2D((1, 1))(X_input)
- 
+  # activity_regularizer=regularizers.l2(reg_lambda)
   for i in range(3):
-    X = Conv2D(32, (5, 5), strides=(1,1), name = 'conv'+str(i), activity_regularizer=regularizers.l2(reg_lambda))(X)
+    X = Conv2D(32, (5, 5), strides=(1,1), name = 'conv'+str(i))(X)
     X = BatchNormalization(axis = 3, name = 'bn'+str(i))(X)
     X = Activation('relu')(X)
     if i > 0 and i % 5 == 0:
@@ -35,7 +34,7 @@ def PneuModel(input_shape, bclass=False, reg_lambda=0.01):
 
   return model
 
-def create_model(dims=(600,600,1), optimizer='adam', loss='mean_squared_logarithmic_error', metrics=["accuracy"], bclass=False):
+def create_model(dims=(200,200,1), optimizer='adam', loss='mean_squared_logarithmic_error', metrics=["accuracy"], bclass=False):
   # Create model
   pneuModel = PneuModel(dims, bclass=bclass)
   # Compile model

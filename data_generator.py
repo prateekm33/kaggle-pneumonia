@@ -4,7 +4,7 @@ import numpy as np
 class DataGenerator(keras.utils.Sequence):
     'Generates data for Keras'
     def __init__(self, list_IDs, labels, batch_size=16, dim=(600,600,1), n_channels=1,
-                 n_classes=10, n_output=5, shuffle=True):
+                 n_classes=10, n_output=5, shuffle=True, bclass=False):
         'Initialization'
         self.dim = dim
         self.batch_size = batch_size
@@ -14,6 +14,7 @@ class DataGenerator(keras.utils.Sequence):
         self.n_classes = n_classes
         self.shuffle = shuffle
         self.on_epoch_end()
+        self.bclass = bclass
         self.n_output = n_output
 
     def __len__(self):
@@ -49,6 +50,8 @@ class DataGenerator(keras.utils.Sequence):
             # Store sample
             X[i,] = np.load('processed_train_images/' + ID + '.npz')['image']
             # Store label
-            y[i] = self.labels[ID]
-
+            if self.bclass:
+              y[i] = self.labels[ID][-1]
+            else:
+              y[i] = self.labels[ID]
         return X, y
