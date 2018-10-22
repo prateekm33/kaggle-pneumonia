@@ -31,3 +31,4 @@ class Logger(keras.callbacks.Callback):
         log_file.write('\t logs : ' + str(logs) + '\n')
         log_file.write('----------------- \n')
         return
+

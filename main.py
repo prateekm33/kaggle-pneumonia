@@ -8,13 +8,13 @@ from get_partition import get_partition, get_labels
 from data_generator import DataGenerator
 from model_callbacks import Logger
 from tensorflow.keras.models import load_model
+from tensorflow.keras.callbacks import CSVLogger
 
 def main(model_file=None):
   if model_file != None:
     model = load_model(model_file)
   else:
     model = create_model()
-  
   run(model)
 
 
@@ -26,7 +26,7 @@ def run(pneuModel):
           'shuffle': True}
 
   # Datasets
-  partition = get_partition('stage_1_train_labels.csv') # IDs
+  partition = get_partition('stage_1_train_labels.csv', 1000) # IDs
   labels = get_labels() # Labels
 
   # Generators
@@ -34,36 +34,25 @@ def run(pneuModel):
   validation_generator = DataGenerator(partition['validation'], labels, **params)
 
   # Train model on dataset
-  callbacks = [Logger()]
+  callbacks = [Logger(), CSVLogger('training.log')]
   pneuModel.fit_generator(generator=training_generator,
                       validation_data=validation_generator,
                       use_multiprocessing=True,
                       workers=6,
                       callbacks=callbacks
                       )
+  ts = '.'.join(str(datetime.datetime.now()).split('.'))
+  pneuModel.save('models/model-' + ts + '.h5')
 
   # Test model
-  test_label_ids = partition['test']
-  test_Y = np.zeros((len(test_label_ids, 5)))
-  test_X = np.zeros((len(test_label_ids, 600, 600, 1)))
-  for i in range(len(test_label_ids)):
-    _id = test_label_ids[i]
-    test_Y[i] = labels[_id]
-    test_X[i] = np.load('processed_train_images/' + _id + '.npz')['image']
-
-  preds = pneuModel.evaluate(x=test_X, y=test_Y)
-  
-  ts = '.'.join(str(datetime.datetime.now()).split('.')[0])
-  f = open('evaluations/%s.txt' %ts, 'w')
+  evaluation_generator = DataGenerator(partition['test'], labels, **params)
+  preds = pneuModel.evaluate_generator(generator=evaluation_generator, use_multiprocessing=True, workers=6)
+  f = open('evaluations/model-%s.txt' %ts, 'w')
   f.write(str(preds))
-  pneuModel.save('models/model-' + ts + '.h5')
-  # pf.write('Test Accuracy = ' + str(preds[1]) + '\n')
-  # pf.write('preds : \n')
-  # pf.write('\t\t' + preds)
-
+  print(preds)
 
 model_file = None
 if (len(sys.argv) > 1):
   model_file = sys.argv[1]
 
-run(model_file)
+main(model_file)

@@ -10,3 +10,6 @@ stage_1_test_images/*
 *.npy
 *.npz
 logs.txt
+evaluations/
+*.log
+predictions.txt

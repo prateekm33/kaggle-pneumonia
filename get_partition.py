@@ -7,12 +7,13 @@ get all IDs -- read from csv
 shuffle/rand perm
 '''
 
-def get_partition(labels_csv):
+def get_partition(labels_csv, sample_size=None):
   IDs = np.array(pd.read_csv(
     labels_csv,
     dtype={'patientId': str, 'x': np.float32, 'y': np.float32, 'width': np.float32, 'height': np.float32, 'Target': np.float32},
     engine="python",
-    usecols=['patientId']
+    usecols=['patientId'],
+    nrows=sample_size
   ).values)
   np.random.shuffle(IDs)
   partition_1 = int(np.floor(len(IDs) * 0.6))
