@@ -5,9 +5,15 @@ import pydicom
 import scipy.misc
 import cv2
 
+
 def resizeIMG(arr, size=(200,200)):
   img = cv2.resize(arr, size)
   return np.reshape(img, (*size, 1))
+
+def resize_processed():
+  for f in listdir('processed_train_images'):
+    arr = resizeIMG(np.load('processed_train_images/' + f)['image'])
+    np.savez_compressed('processed_train_images/' + f, image=arr)
 
 def resizeDCM(dir, file):
   ds = pydicom.dcmread(dir + '/' + file)
