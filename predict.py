@@ -3,6 +3,7 @@ import sys
 from data_generator import DataGenerator
 from get_partition import get_partition, get_labels
 import numpy as np
+from model import custom_activation
 
 filename = sys.argv[1]
 model = load_model(filename)

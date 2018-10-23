@@ -13,7 +13,10 @@ def custom_loss(y_true, y_preds):
   y_temp = tf.stack([y_temp[:,:-1], y_preds[:, -1]], axis=1)
   return losses.mean_squared_error(y_true, y_temp)  
 
+def custom_activation(x):
+  return tf.nn.leaky_relu(x)
 
+_activation = custom_activation
 def PneuModel(input_shape, bclass=False, reg_lambda=0.01):
   print('input shape : ', input_shape)
 
@@ -44,7 +47,9 @@ def PneuModel(input_shape, bclass=False, reg_lambda=0.01):
 
   X = Flatten()(X)
   # X = Dense(282752, activation='linear', name='fc0')(X)
-  X = Dense(5, activation='sigmoid', name='fc1')(X)
+  print(X.shape, '--shape after flatten')
+  X = Dense(5, activation='linear', name='fc1')(X)
+  # X = Dense(5, activation='sigmoid', name='fc2')(X)
 
   model = Model(inputs = X_input, outputs = X, name='PneuModel')
   
