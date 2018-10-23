@@ -38,7 +38,7 @@ def PneuModel(input_shape, bclass=False, reg_lambda=0.01):
   X = MaxPooling2D((3,3), strides=(1,1), name='pool1')(X)
   # 103 --> 101x101x100
 
-  X = Conv2D(256, (7, 7), strides=(2, 2), name='conv3')(X)
+  X = Conv2D(256, (7, 7), strides=(2, 2), name='conv4')(X)
   X = Activation('relu')(X)
   # 101 --> 47x47x256
 
