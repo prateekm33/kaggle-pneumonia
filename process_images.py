@@ -6,7 +6,7 @@ import scipy.misc
 import cv2
 
 
-def resizeIMG(arr, size=(448,448)):
+def resizeIMG(arr, size=(449,449)):
   img = cv2.resize(arr, size)
   return np.reshape(img, (*size, 1))
 

@@ -26,7 +26,7 @@ def main(model_file=None):
 
 
 def run(pneuModel):
-  params = {'dim': (448,448,1),
+  params = {'dim': (449,449,1),
           'batch_size': batch_size,
           'n_channels': 1,
           'shuffle': True,

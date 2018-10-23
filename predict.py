@@ -10,7 +10,7 @@ model = load_model(filename)
 sample_size = 50
 _input = '0100515c-5204-4f31-98e0-f35e4b00004a'
 
-params = {'dim': (448,448,1),
+params = {'dim': (449,449,1),
           'batch_size': 1,
           'n_channels': 1,
           'shuffle': True}
