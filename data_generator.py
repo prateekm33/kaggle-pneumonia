@@ -3,7 +3,7 @@ import numpy as np
 
 class DataGenerator(keras.utils.Sequence):
     'Generates data for Keras'
-    def __init__(self, list_IDs, labels, batch_size=16, dim=(200,200,1), n_channels=1,
+    def __init__(self, list_IDs, labels, batch_size=16, dim=(449,449,1), n_channels=1,
                  n_output=5, shuffle=True, bclass=False):
         'Initialization'
         self.dim = dim
