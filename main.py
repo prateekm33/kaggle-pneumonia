@@ -13,8 +13,9 @@ from tensorflow.keras.callbacks import CSVLogger
 bclass = False
 loss = 'mean_squared_error'#'binary_crossentropy'
 n_output = 5
-sample_size = 1000
-epochs = 1
+sample_size = 50
+epochs = 40
+batch_size = 10
 
 def main(model_file=None):
   if model_file != None:
@@ -25,9 +26,8 @@ def main(model_file=None):
 
 
 def run(pneuModel):
-  params = {'dim': (200,200,1),
-          'batch_size': 16,
-          'n_classes': n_output,
+  params = {'dim': (448,448,1),
+          'batch_size': batch_size,
           'n_channels': 1,
           'shuffle': True,
           'bclass': bclass,

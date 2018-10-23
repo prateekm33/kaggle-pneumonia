@@ -6,7 +6,7 @@ import scipy.misc
 import cv2
 
 
-def resizeIMG(arr, size=(200,200)):
+def resizeIMG(arr, size=(448,448)):
   img = cv2.resize(arr, size)
   return np.reshape(img, (*size, 1))
 
@@ -42,10 +42,10 @@ def process_images(images_dir, labels_csv,  sample_size=None, bclass = False):
     if bclass == False:
       y_scale = image.shape[0] / shape[0]
       x_scale = image.shape[1] / shape[1]
-      labels[i, 1] /= (image.shape[1]/x_scale)
-      labels[i, 2] /= (image.shape[0]/y_scale)
-      labels[i, 3] /= (image.shape[1]/x_scale) #(shape[1] * 1 / x_scale)#x_scale / image.shape[1]
-      labels[i, 4] /= (image.shape[0]/y_scale) #(shape[0] * 1 / y_scale)#y_scale / image.shape[0]
+      labels[i, 1] *= x_scale #(image.shape[1]/x_scale)
+      labels[i, 2] *= y_scale #(image.shape[0]/y_scale)
+      labels[i, 3] *= x_scale #(image.shape[1]/x_scale) #(shape[1] * 1 / x_scale)#x_scale / image.shape[1]
+      labels[i, 4] *= y_scale #(image.shape[0]/y_scale) #(shape[0] * 1 / y_scale)#y_scale / image.shape[0]
       np.savez_compressed('processed_train_labels/' + labels[i, 0], label=labels[i])
   print(labels[4])
   # np.reshape(labels[:,1:], (len(labels), 5))

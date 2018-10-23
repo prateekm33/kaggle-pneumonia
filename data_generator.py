@@ -3,15 +3,14 @@ import numpy as np
 
 class DataGenerator(keras.utils.Sequence):
     'Generates data for Keras'
-    def __init__(self, list_IDs, labels, batch_size=16, dim=(600,600,1), n_channels=1,
-                 n_classes=10, n_output=5, shuffle=True, bclass=False):
+    def __init__(self, list_IDs, labels, batch_size=16, dim=(200,200,1), n_channels=1,
+                 n_output=5, shuffle=True, bclass=False):
         'Initialization'
         self.dim = dim
         self.batch_size = batch_size
         self.labels = labels
         self.list_IDs = list_IDs
         self.n_channels = n_channels
-        self.n_classes = n_classes
         self.shuffle = shuffle
         self.on_epoch_end()
         self.bclass = bclass
@@ -51,7 +50,7 @@ class DataGenerator(keras.utils.Sequence):
             X[i,] = np.load('processed_train_images/' + ID + '.npz')['image']
             # Store label
             if self.bclass:
-              y[i] = self.labels[ID][-1]
+              y[i] = np.reshape(self.labels[ID][-1], (self.n_output))
             else:
-              y[i] = self.labels[ID]
+              y[i] = np.reshape(self.labels[ID], (self.n_output))
         return X, y
