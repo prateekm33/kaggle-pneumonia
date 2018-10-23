@@ -40,8 +40,8 @@ def process_images(images_dir, labels_csv,  sample_size=None, bclass = False):
     # images[i] = image
     np.savez_compressed('processed_train_images/' + labels[i, 0], image=image)
     if bclass == False:
-      y_scale = image.shape[0] / shape[0]
-      x_scale = image.shape[1] / shape[1]
+      y_scale = np.float32(image.shape[0] / shape[0])
+      x_scale = np.float32(image.shape[1] / shape[1])
       labels[i, 1] *= x_scale #(image.shape[1]/x_scale)
       labels[i, 2] *= y_scale #(image.shape[0]/y_scale)
       labels[i, 3] *= x_scale #(image.shape[1]/x_scale) #(shape[1] * 1 / x_scale)#x_scale / image.shape[1]
