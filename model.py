@@ -21,25 +21,30 @@ def PneuModel(input_shape, bclass=False, reg_lambda=0.01):
   X_input = Input(shape=input_shape)
 
   X = Conv2D(32, (7, 7), strides=(1, 1), name='conv0')(X_input)
+  X = Activation('relu')(X)
   # 449 --> 443x443x32
   X = Conv2D(32, (7, 7), strides=(2, 2), name='conv1')(X)
+  X = Activation('relu')(X)
   # 443 --> 219x219x32
   X = MaxPooling2D((3,3), strides=(2,2), name='pool0')(X)
   # 219 --> 109x109x32
   X = Conv2D(64, (7,7), strides=(1, 1), name='conv2')(X)
+  X = Activation('relu')(X)
   # 109 --> 103x103x64
   X = ZeroPadding2D((1, 1))(X)
   X = Conv2D(100, (3, 3), name='conv3')(X)
+  X = Activation('relu')(X)
   # 103 --> 103x103x100
   X = MaxPooling2D((3,3), strides=(1,1), name='pool1')(X)
   # 103 --> 101x101x100
 
   X = Conv2D(256, (7, 7), strides=(2, 2), name='conv3')(X)
+  X = Activation('relu')(X)
   # 101 --> 47x47x256
 
   X = Flatten()(X)
-  X = Dense(282752, activation='linear', name='fc0')(X)
-  X = Dense(5, activation='linear', name='fc1')(X)
+  # X = Dense(282752, activation='linear', name='fc0')(X)
+  X = Dense(5, activation='sigmoid', name='fc1')(X)
 
   model = Model(inputs = X_input, outputs = X, name='PneuModel')
   
